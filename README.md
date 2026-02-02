@@ -75,4 +75,3 @@ pytest -q
 * `docs/ADR/` — ключевые решения (SRM expected_split, balance gating по effect size)
 
 ---
-
