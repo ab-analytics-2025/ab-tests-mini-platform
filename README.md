@@ -132,7 +132,6 @@ irm -Method Post "http://localhost:8080/analyze?plots=0" -ContentType "applicati
 ---
 
 ## Тестирование
-
 ```powershell
 pytest -q
 ```
@@ -140,6 +139,7 @@ pytest -q
 ```powershell
 pytest -q --cov=ab_platform --cov-report=term-missing
 ```
+
 
 ---
 
@@ -162,4 +162,4 @@ pytest -q --cov=ab_platform --cov-report=term-missing
 | 4 | Statistician | SRM/balance, тесты, CI/MDE, интерпретация | _(ФИО / GitHub-ник)_ |
 | 5 | Data Analyst | Визуализации, выводы, витрина результатов | _Микехин Никита Вячеславович / FireNike2002_ |
 | 6 | QA | Unit + data-quality тесты, “красные флаги” | _(ФИО / GitHub-ник)_ |
-| 7 | DevOps | Воспроизводимость, CI (опционально), окружение | _(ФИО / GitHub-ник)_ |
+| 7 | DevOps | Воспроизводимость, CI, окружение | _(ФИО / GitHub-ник)_ |
