@@ -22,14 +22,40 @@ def test_pipeline_smoke(tmp_path: Path):
         alpha=0.05,
         ci_level=0.95,
         write_plots=False,
+        expected_split=None,
+        min_uplift_abs=0.0,
     )
 
     assert cleaned.exists()
     assert report.exists()
 
     data = json.loads(report.read_text(encoding="utf-8"))
-    for key in ("meta", "data_quality", "srm", "balance_checks", "ztest_conversion", "mde_power", "p_adjusted", "recommendation"):
+
+    # базовые секции отчёта
+    for key in (
+        "meta",
+        "data_quality",
+        "srm",
+        "balance_checks",
+        "ztest_conversion",
+        "mde_power",
+        "p_adjusted",
+        "recommendation",
+    ):
         assert key in data
+
+    assert "status" in data["srm"]
+    assert "passes" in data["srm"]
+    assert data["srm"]["status"] in ("pass", "fail", "skipped", "error")
+
+    # balance: должны быть thresholds и overall
+    assert "thresholds" in data["balance_checks"]
+    assert "overall" in data["balance_checks"]
+    assert "passes_effect_size" in data["balance_checks"]["overall"]
+
+    # recommendation: decision + rollout
+    assert "decision" in data["recommendation"]
+    assert "rollout" in data["recommendation"]
 
     # return value == report object
     assert "meta" in res

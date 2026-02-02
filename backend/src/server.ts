@@ -31,10 +31,18 @@ app.post("/analyze", async (req, res) => {
 
   const plots = String(req.query.plots ?? "1") === "1";
 
+  // existing
   const seed = req.body?.seed;
   const nBoot = req.body?.nBoot;
   const alpha = req.body?.alpha;
   const ciLevel = req.body?.ciLevel;
+
+  // Step 1 (contract / design params)
+  const expectedSplit = req.body?.expectedSplit ?? cfg.expectedSplit ?? undefined;
+  const srmUniformTol = req.body?.srmUniformTol;
+  const balanceSmdThreshold = req.body?.balanceSmdThreshold;
+  const balanceCramervThreshold = req.body?.balanceCramervThreshold;
+  const minUpliftAbs = req.body?.minUpliftAbs;
 
   try {
     isRunning = true;
@@ -44,6 +52,11 @@ app.post("/analyze", async (req, res) => {
       nBoot,
       alpha,
       ciLevel,
+      expectedSplit,
+      srmUniformTol,
+      balanceSmdThreshold,
+      balanceCramervThreshold,
+      minUpliftAbs,
     });
     res.json(report);
   } catch (e: any) {
