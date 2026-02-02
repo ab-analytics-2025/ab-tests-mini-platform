@@ -73,6 +73,3 @@ pytest -q
 * `docs/DATA_README.md` — словарь данных + правила очистки
 * `docs/TESTING.md` — как тестировать + красные флаги
 * `docs/ADR/` — ключевые решения (SRM expected_split, balance gating по effect size)
-
----
-
