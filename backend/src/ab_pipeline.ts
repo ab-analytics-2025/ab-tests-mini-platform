@@ -9,6 +9,13 @@ export type AnalyzeOptions = {
   nBoot?: number;
   alpha?: number;
   ciLevel?: number;
+
+  // Step 1
+  expectedSplit?: string; // e.g. "ad=0.96,psa=0.04"
+  srmUniformTol?: number;
+  balanceSmdThreshold?: number;
+  balanceCramervThreshold?: number;
+  minUpliftAbs?: number;
 };
 
 function readJsonFile(filePath: string): any {
@@ -47,6 +54,14 @@ export async function runAnalysis(cfg: AppConfig, opts: AnalyzeOptions): Promise
   if (opts.nBoot !== undefined) args.push("--n-boot", String(opts.nBoot));
   if (opts.alpha !== undefined) args.push("--alpha", String(opts.alpha));
   if (opts.ciLevel !== undefined) args.push("--ci-level", String(opts.ciLevel));
+
+  // Step 1 flags
+  if (opts.expectedSplit !== undefined) args.push("--expected-split", String(opts.expectedSplit));
+  if (opts.srmUniformTol !== undefined) args.push("--srm-uniform-tol", String(opts.srmUniformTol));
+  if (opts.balanceSmdThreshold !== undefined) args.push("--balance-smd-threshold", String(opts.balanceSmdThreshold));
+  if (opts.balanceCramervThreshold !== undefined)
+    args.push("--balance-cramerv-threshold", String(opts.balanceCramervThreshold));
+  if (opts.minUpliftAbs !== undefined) args.push("--min-uplift-abs", String(opts.minUpliftAbs));
 
   const code: number = await new Promise((resolve, reject) => {
     const p = spawn(cfg.pythonCmd, args, {

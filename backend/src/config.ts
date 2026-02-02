@@ -23,6 +23,9 @@ export type AppConfig = {
   cleanedPath: string;
   reportPath: string;
   figuresDir: string;
+
+  // Step 1 (optional defaults)
+  expectedSplit?: string;
 };
 
 function splitCmd(cmd: string): { bin: string; args: string[] } {
@@ -31,7 +34,7 @@ function splitCmd(cmd: string): { bin: string; args: string[] } {
 }
 
 export function loadConfig(): AppConfig {
-  const projectRoot = path.resolve(envStr("PROJECT_ROOT", path.resolve(process.cwd(), "..")));
+  const projectRoot = path.resolve(envStr("PROJECT_ROOT", path.resolve(process.cwd(), ".")));
 
   const pythonCmdRaw = envStr("PYTHON_CMD", "python");
   const { bin, args } = splitCmd(pythonCmdRaw);
@@ -41,9 +44,15 @@ export function loadConfig(): AppConfig {
   const reportPath = envStr("AB_REPORT", path.join(projectRoot, "reports", "report.json"));
   const figuresDir = envStr("AB_FIGURES", path.join(projectRoot, "reports", "figures"));
 
+  const port = envInt("PORT", 8080);
+  const corsOrigin = envStr("CORS_ORIGIN", "*");
+
+  const expectedSplitRaw = envStr("AB_EXPECTED_SPLIT", "").trim();
+  const expectedSplit = expectedSplitRaw ? expectedSplitRaw : undefined;
+
   return {
-    port: envInt("PORT", 3000),
-    corsOrigin: envStr("CORS_ORIGIN", "http://localhost:5173"),
+    port,
+    corsOrigin,
     projectRoot,
 
     pythonCmd: bin,
@@ -53,5 +62,7 @@ export function loadConfig(): AppConfig {
     cleanedPath,
     reportPath,
     figuresDir,
+
+    expectedSplit,
   };
 }
